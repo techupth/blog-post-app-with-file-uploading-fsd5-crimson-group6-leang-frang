@@ -16,9 +16,11 @@ function AuthProvider(props) {
 
   // make a login request
   const login = async (data) => {
+    
     try {
       setState({ ...state, error: null, loading: true });
       const result = await axios.post("http://localhost:4000/auth/login", data);
+      console.log(result)
       const token = result.data.token;
       localStorage.setItem("token", token);
       const userDataFromToken = jwtDecode(token);
@@ -35,7 +37,9 @@ function AuthProvider(props) {
 
   // register the user
   const register = async (data) => {
-    await axios.post("http://localhost:4000/auth/register", data);
+    await axios.post("http://localhost:4000/auth/register", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     navigate("/login");
   };
 
